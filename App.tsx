@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AdOverlay from './components/AdOverlay';
 import Hero from './components/Hero';

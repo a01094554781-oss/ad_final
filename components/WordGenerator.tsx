@@ -67,6 +67,8 @@ const WordGenerator: React.FC = () => {
 
   // Helper to split text into two balanced lines
   const renderSplitText = (text: string) => {
+    // For 4 chars: splitIndex = 2 (First line 2 chars, Second line 2 chars)
+    // For 5 chars: splitIndex = 3 (First line 3 chars, Second line 2 chars)
     const splitIndex = Math.ceil(text.length / 2);
     const firstLine = text.slice(0, splitIndex);
     const secondLine = text.slice(splitIndex);
@@ -135,6 +137,7 @@ const WordGenerator: React.FC = () => {
                     
                     {/* Cookie Display Area */}
                     <div className="relative py-6 w-full flex justify-center">
+                        {/* Split layout only if word is 4 chars or longer */}
                         {result.hangeul.length >= 4 ? (
                             renderSplitText(result.hangeul)
                         ) : (
