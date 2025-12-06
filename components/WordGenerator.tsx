@@ -16,10 +16,10 @@ const WordGenerator: React.FC = () => {
     setResult(null);
 
     try {
-      // Reduced artificial delay to 0.5s for snappy feedback
+      // Fast response
       const [data] = await Promise.all([
         getWordOfTheDay(),
-        new Promise(resolve => setTimeout(resolve, 500))
+        new Promise(resolve => setTimeout(resolve, 300))
       ]);
       setResult(data);
     } catch (err) {
@@ -35,16 +35,14 @@ const WordGenerator: React.FC = () => {
         key={index} 
         className="animate-float relative" 
         style={{
-            animationDelay: `${index * 0.1}s`, // Faster animation stagger
+            animationDelay: `${index * 0.1}s`,
             fontFamily: '"Jua", sans-serif'
         }}
     >
-        {/* The Authentic Golden Biscuit Effect */}
         <span 
             className={`${isCompact ? 'text-6xl md:text-8xl' : 'text-8xl md:text-9xl'} block relative z-10 leading-none`}
             style={{
-                color: '#EBC88F', // Golden biscuit dough color
-                // Stacked shadows for 3D extrusion (thickness)
+                color: '#EBC88F', 
                 textShadow: `
                     0px 1px 0px #B98E58,
                     0px 2px 0px #B98E58,
@@ -64,21 +62,16 @@ const WordGenerator: React.FC = () => {
     </div>
   );
 
-  // Helper to split text into two balanced lines
   const renderSplitText = (text: string) => {
-    // For 4 chars: splitIndex = 2 (First line 2 chars, Second line 2 chars)
-    // For 5 chars: splitIndex = 3 (First line 3 chars, Second line 2 chars)
     const splitIndex = Math.ceil(text.length / 2);
     const firstLine = text.slice(0, splitIndex);
     const secondLine = text.slice(splitIndex);
 
     return (
         <div className="flex flex-col gap-2 items-center">
-            {/* First Line */}
             <div className="flex gap-1 justify-center">
                 {firstLine.split('').map((char, i) => renderCookieChar(char, i, true))}
             </div>
-            {/* Second Line */}
             <div className="flex gap-1 justify-center">
                 {secondLine.split('').map((char, i) => renderCookieChar(char, i + splitIndex, true))}
             </div>
@@ -90,7 +83,6 @@ const WordGenerator: React.FC = () => {
     <section className="w-full flex justify-center max-w-lg">
       <div className={`w-full relative transition-transform duration-100 ${isShaking ? 'animate-shake' : ''}`}>
         
-        {/* SVG Filter Definition for Cookie Texture */}
         <svg width="0" height="0" className="absolute">
           <defs>
             <filter id="cookie-texture" x="0%" y="0%" width="100%" height="100%">
@@ -104,7 +96,6 @@ const WordGenerator: React.FC = () => {
           </defs>
         </svg>
 
-        {/* Vending Machine Body */}
         <div className="bg-[#7B4EBF] rounded-[3rem] border-8 border-black p-6 shadow-[12px_12px_0px_rgba(0,0,0,0.5)] relative overflow-hidden z-10">
           
           <div className="text-center mb-4">
@@ -113,7 +104,6 @@ const WordGenerator: React.FC = () => {
             </span>
           </div>
 
-          {/* Glass Display */}
           <div className="bg-[#FFF9C4] rounded-3xl p-6 mb-6 border-4 border-black/30 min-h-[300px] flex items-center justify-center relative shadow-inner overflow-hidden">
             <div className="absolute inset-0 opacity-10" style={{
                 backgroundImage: 'radial-gradient(#FBC02D 3px, transparent 3px)',
@@ -134,9 +124,7 @@ const WordGenerator: React.FC = () => {
             ) : (
                 <div className="animate-pop-in w-full flex flex-col items-center justify-center relative z-10">
                     
-                    {/* Cookie Display Area */}
                     <div className="relative py-6 w-full flex justify-center">
-                        {/* Split layout only if word is 4 chars or longer */}
                         {result.hangeul.length >= 4 ? (
                             renderSplitText(result.hangeul)
                         ) : (
@@ -156,7 +144,6 @@ const WordGenerator: React.FC = () => {
             )}
           </div>
 
-          {/* Controls Area */}
           <div className="flex items-center gap-4 bg-black/30 p-5 rounded-3xl border-t border-white/10">
             <div className="flex-1">
                 <div className="flex justify-between text-[10px] font-bold text-[#FFD500] uppercase mb-1">
@@ -180,7 +167,6 @@ const WordGenerator: React.FC = () => {
             </button>
           </div>
 
-          {/* Output Slot */}
           <div className="mt-6 bg-[#1a1a1a] rounded-xl h-20 border-b-4 border-white/10 relative flex items-center justify-center shadow-inner">
              <div className="w-4/5 h-3 bg-black rounded-full opacity-50"></div>
              {result && !loading && (
@@ -189,7 +175,6 @@ const WordGenerator: React.FC = () => {
           </div>
         </div>
 
-        {/* Result Card */}
         {result && (
             <div className="mt-4 bg-white border-4 border-black rounded-3xl p-6 shadow-[0px_10px_20px_rgba(0,0,0,0.2)] animate-slide-up relative z-0 mx-4">
                 <div className="flex justify-between items-center mb-4 border-b-2 border-gray-100 pb-3">
