@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getWordOfTheDay } from '../services/geminiService.ts';
 import { WordResult } from '../types.ts';
 import { RefreshCw, Sparkles, ArrowDownCircle, Cookie } from 'lucide-react';
 
@@ -15,12 +16,10 @@ const WordGenerator: React.FC = () => {
     setResult(null);
 
     try {
-      // Artificial delay for animation
+      // Fast animation delay (0.5s)
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Access the Global Function defined in index.html
-      // @ts-ignore
-      const word = await window.getWordOfTheDay();
+      const word = await getWordOfTheDay();
       setResult(word);
     } catch (err) {
       console.error(err);
@@ -63,6 +62,7 @@ const WordGenerator: React.FC = () => {
   );
 
   const renderSplitText = (text: string) => {
+    // Logic: Split in half
     const splitIndex = Math.ceil(text.length / 2);
     const firstLine = text.slice(0, splitIndex);
     const secondLine = text.slice(splitIndex);
@@ -125,6 +125,7 @@ const WordGenerator: React.FC = () => {
                 <div className="animate-pop-in w-full flex flex-col items-center justify-center relative z-10">
                     
                     <div className="relative py-6 w-full flex justify-center">
+                        {/* 4 characters or more: Split layout */}
                         {result.hangeul.length >= 4 ? (
                             renderSplitText(result.hangeul)
                         ) : (
