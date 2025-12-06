@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X, Clock, ExternalLink } from 'lucide-react';
 

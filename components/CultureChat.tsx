@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { chatWithGuide } from '../services/geminiService';
-import { ChatMessage } from '../types';
-import { MessageCircle, Send, User, Bot } from 'lucide-react';
+import { chatWithGuide } from '../services/geminiService.ts';
+import { ChatMessage } from '../types.ts';
+import { Send, User, Bot } from 'lucide-react';
 
 const CultureChat: React.FC = () => {
   const [input, setInput] = useState('');

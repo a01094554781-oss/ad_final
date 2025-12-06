@@ -1,24 +1,6 @@
-
-import { GoogleGenAI, Type, Schema, Content } from "@google/genai";
-import { WordResult, TranslationResult, FortuneResult, FlavorPersonality } from "../types";
-
-// Safely access process.env to avoid "process is not defined" errors in browser
-const getApiKey = () => {
-  try {
-    if (typeof process !== 'undefined' && process.env) {
-      return process.env.API_KEY || '';
-    }
-  } catch (e) {
-    // Ignore error if process is undefined
-  }
-  return '';
-};
-
-const apiKey = getApiKey();
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+import { WordResult, TranslationResult, FortuneResult, FlavorPersonality } from "../types.ts";
 
 // --- RICH LOCAL DATABASE (BEAUTIFUL KOREAN WORDS) ---
-// Curated list of 100+ aesthetic, poetic, cultural and pure Korean words
 const WORD_DATABASE: WordResult[] = [
   // --- 2 Characters (Nature & Stars) ---
   { hangeul: "윤슬", romanization: "Yunseul", meaning: "Sunlight on ripples", vibeCheck: "You sparkle beautifully, just like the shining waves.", luckyItem: "Small Mirror" },
@@ -111,48 +93,7 @@ const WORD_DATABASE: WordResult[] = [
   { hangeul: "예그리나", romanization: "Yegurina", meaning: "Loving each other", vibeCheck: "Connection is the key today.", luckyItem: "Phone Call" },
 ];
 
-const FORTUNE_DATABASE: FortuneResult[] = [
-  // Keeping this for backward compatibility if needed
-  { luckyColor: "Gold", character: "빛", name: "Light", sound: "Bit", fortune: "You will shine brightly in your endeavors today." }
-];
-
-// Define schemas only where AI is still strictly needed (Chat/Translate)
-const translationSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    hangeul: { type: Type.STRING },
-    romanization: { type: Type.STRING },
-    meaning: { type: Type.STRING },
-    characters: {
-      type: Type.ARRAY,
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          char: { type: Type.STRING },
-          visualShape: { type: Type.STRING }
-        },
-        required: ["char", "visualShape"]
-      }
-    }
-  },
-  required: ["hangeul", "romanization", "meaning", "characters"]
-};
-
-const flavorSchema: Schema = {
-  type: Type.OBJECT,
-  properties: {
-    powerWord: { type: Type.STRING },
-    title: { type: Type.STRING },
-    description: { type: Type.STRING },
-    matchPercent: { type: Type.INTEGER }
-  },
-  required: ["powerWord", "title", "description", "matchPercent"]
-};
-
-// --- FUNCTIONS ---
-
 // State to track available indices for "No Repeat" logic
-// Initialized with all indices [0, 1, 2, ... length-1]
 let availableIndices: number[] = Array.from({ length: WORD_DATABASE.length }, (_, i) => i);
 
 export const getWordOfTheDay = async (): Promise<WordResult> => {
@@ -172,73 +113,21 @@ export const getWordOfTheDay = async (): Promise<WordResult> => {
   return WORD_DATABASE[wordIndex];
 };
 
-export const getCookieFortune = async (): Promise<FortuneResult> => {
-  const randomIndex = Math.floor(Math.random() * FORTUNE_DATABASE.length);
-  return FORTUNE_DATABASE[randomIndex];
-};
+// --- DUMMY FUNCTIONS FOR OFFLINE COMPATIBILITY ---
+// These are kept to prevent import errors in other components, but will not be used in the main WordGenerator flow.
 
 export const translateName = async (name: string): Promise<TranslationResult> => {
-  if (!apiKey || !ai) throw new Error("API Key is missing for Translation");
-
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `Translate the name "${name}" into Korean (Hangeul).
-      Break it down by character/syllable and describe the shape of the letters playfully.
-      Give a fun or poetic meaning to the name as if it were a Korean word or name.`,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: translationSchema,
-      }
-    });
-
-    const text = response.text;
-    if (!text) throw new Error("No response text");
-    return JSON.parse(text) as TranslationResult;
-  } catch (error) {
-    console.error("Translation error:", error);
-    throw error;
-  }
+    throw new Error("Offline mode: AI translation unavailable.");
 };
 
-export const chatWithGuide = async (history: Content[], message: string): Promise<string> => {
-  if (!apiKey || !ai) return "I'm in offline mode! Please add an API key to chat.";
+export const chatWithGuide = async (history: any[], message: string): Promise<string> => {
+    return "Offline mode: Chat unavailable.";
+};
 
-  try {
-    const chat = ai.chats.create({
-      model: "gemini-2.5-flash",
-      history: history,
-      config: {
-        systemInstruction: "You are 'Cookie', a friendly and knowledgeable guide for Hangeul Kwaja.",
-      },
-    });
-
-    const result = await chat.sendMessage({ message });
-    return result.text || "Sorry, I'm at a loss for words!";
-  } catch (error) {
-    console.error("Chat error:", error);
-    throw error;
-  }
+export const getCookieFortune = async (): Promise<FortuneResult> => {
+    throw new Error("Offline mode: Fortune unavailable.");
 };
 
 export const analyzeFlavorPersonality = async (flavor: 'garlic' | 'choco'): Promise<FlavorPersonality> => {
-  if (!apiKey || !ai) throw new Error("API Key is missing for Analysis");
-
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `Analyze personality for flavor: ${flavor}.`,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: flavorSchema,
-      }
-    });
-
-    const text = response.text;
-    if (!text) throw new Error("No response text");
-    return JSON.parse(text) as FlavorPersonality;
-  } catch (error) {
-    console.error("Flavor analysis error:", error);
-    throw error;
-  }
+    throw new Error("Offline mode: Analysis unavailable.");
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import AdOverlay from './components/AdOverlay';
-import Hero from './components/Hero';
-import WordGenerator from './components/WordGenerator';
+import AdOverlay from './components/AdOverlay.tsx';
+import Hero from './components/Hero.tsx';
+import WordGenerator from './components/WordGenerator.tsx';
 
 const App: React.FC = () => {
   return (

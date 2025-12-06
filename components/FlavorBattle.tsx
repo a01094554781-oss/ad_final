@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
-import { analyzeFlavorPersonality } from '../services/geminiService';
-import { FlavorPersonality } from '../types';
-import { RefreshCw, Check, Sparkles, Flame, Heart } from 'lucide-react';
+import { analyzeFlavorPersonality } from '../services/geminiService.ts';
+import { FlavorPersonality } from '../types.ts';
+import { RefreshCw, Sparkles, Flame, Heart } from 'lucide-react';
 
 const FlavorBattle: React.FC = () => {
   const [result, setResult] = useState<FlavorPersonality | null>(null);

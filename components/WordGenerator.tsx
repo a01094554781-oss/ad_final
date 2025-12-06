@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
-import { getWordOfTheDay } from '../services/geminiService';
-import { WordResult } from '../types';
+import { getWordOfTheDay } from '../services/geminiService.ts';
+import { WordResult } from '../types.ts';
 import { RefreshCw, Sparkles, ArrowDownCircle, Cookie } from 'lucide-react';
 
 const WordGenerator: React.FC = () => {

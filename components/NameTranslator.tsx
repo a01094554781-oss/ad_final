@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { translateName } from '../services/geminiService';
-import { TranslationResult } from '../types';
-import { Sparkles, RefreshCw, ChefHat, Volume2 } from 'lucide-react';
+import { translateName } from '../services/geminiService.ts';
+import { TranslationResult } from '../types.ts';
+import { RefreshCw, ChefHat } from 'lucide-react';
 
 const NameTranslator: React.FC = () => {
   const [name, setName] = useState('');
