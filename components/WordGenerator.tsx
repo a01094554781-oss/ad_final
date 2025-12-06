@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { getWordOfTheDay } from '../services/geminiService.ts';
 import { WordResult } from '../types.ts';
 import { RefreshCw, Sparkles, ArrowDownCircle, Cookie } from 'lucide-react';
 
@@ -18,7 +17,10 @@ const WordGenerator: React.FC = () => {
     try {
       // Artificial delay for animation
       await new Promise(resolve => setTimeout(resolve, 500));
-      const word = await getWordOfTheDay();
+      
+      // Access the Global Function defined in index.html
+      // @ts-ignore
+      const word = await window.getWordOfTheDay();
       setResult(word);
     } catch (err) {
       console.error(err);
