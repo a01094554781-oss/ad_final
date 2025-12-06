@@ -16,12 +16,10 @@ const WordGenerator: React.FC = () => {
     setResult(null);
 
     try {
-      // Fast response
-      const [data] = await Promise.all([
-        getWordOfTheDay(),
-        new Promise(resolve => setTimeout(resolve, 300))
-      ]);
-      setResult(data);
+      // Artificial delay for animation
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const word = await getWordOfTheDay();
+      setResult(word);
     } catch (err) {
       console.error(err);
     } finally {
