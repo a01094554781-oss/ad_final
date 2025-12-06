@@ -11,10 +11,15 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Babel for in-browser compilation (Required for GitHub Pages deployment without build) -->
+    <!-- Babel for in-browser compilation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     
-    <!-- Import Map: Strictly use React 18 to match your working example -->
+    <!-- Process Polyfill (Prevents "process is not defined" errors) -->
+    <script>
+      window.process = { env: { NODE_ENV: 'production' } };
+    </script>
+    
+    <!-- Import Map: FIXED to use ONLY React 18 from esm.sh -->
     <script type="importmap">
 {
   "imports": {
